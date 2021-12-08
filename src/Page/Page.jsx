@@ -4,7 +4,7 @@ import container from './container.jsx';
 
 let Page = () => {
 
-	return <container />
+	return "Hello"
 };
 
 
