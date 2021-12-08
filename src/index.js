@@ -1,7 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Page from './Page';
+import PageDashboard from './pages/Dashboard';
 import { Provider as StoreProvider} from './components/Store';
 
 
-render(<StoreProvider><Page /></StoreProvider>, document.getElementById('root'));
+render(<StoreProvider>
+	<PageDashboard />
+</StoreProvider>, document.getElementById('root'));
