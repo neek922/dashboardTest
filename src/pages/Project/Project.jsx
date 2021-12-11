@@ -11,13 +11,13 @@ import Column from './Column';
 
 let Project = ({ history }) => {
 	const a = history.location.pathname.substring(history.location.pathname.lastIndexOf('/')+1);
-	
 	const columns = useSelector((currentState)=> currentState.columns.data);
-	const projects = useSelector((currentState)=> currentState.columns.project_id);
-	console.log(columns[0].toProj == a);
+	
+	
 
 	return <React.Fragment>
-		{columns.map((item, i) => {
+		<Column></Column>
+	{/*	{columns.map((item, i) => {
 			if (a == item.toProj) {
 				<Box display="flex">
 					{ columns.map((item1, i1) => {
@@ -27,7 +27,7 @@ let Project = ({ history }) => {
 						}
 					)}
 				</Box> 
-			}})}
+			}})}*/}
 	</React.Fragment>;
 };
 
