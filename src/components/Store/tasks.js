@@ -1,5 +1,5 @@
 export const initialState = () => ({
-	data: [{
+	data: [/*{
 		id: 1,
 		column_id: 1,
 		text: 'text 1'
@@ -7,7 +7,7 @@ export const initialState = () => ({
 		id: 1,
 		column_id: 2,
 		text: 'text 2'
-	}],
+	}*/],
 });
 
 const tasks = (currentState = initialState(), action) => {

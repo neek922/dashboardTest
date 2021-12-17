@@ -1,18 +1,14 @@
 export const initialState = () => ({
 	currentProjectId: 1,
-	data: [{
-		id: 1,
-		name: 'project 1',
-	}, {
-		id: 19,
-		name: 'project 19',
-	}, {
-		id: 20,
-		name: 'project 20',
-	}, {
-		id: 21,
-		name: 'project 21',
-	}],
+	data: [],
+	favorites: [{
+	id: 1,
+	name: 'project1',
+}, {
+	id: 4,
+	name: 'project2',
+}],
+
 });
 
 const projects = (currentState = initialState(), action) => {
