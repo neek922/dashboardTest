@@ -16,6 +16,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const ButtonWrapper = styled(Button)`
  	height: 100px;
+ 	text-transform: none;
 }
 `;
 
