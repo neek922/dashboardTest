@@ -1,4 +1,5 @@
 export const initialState = () => ({
+	deleteIndex: 0,
 	currentProjectId: 1,
 	data: [],
 	favorites: [{

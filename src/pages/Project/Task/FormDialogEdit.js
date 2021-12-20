@@ -6,10 +6,11 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import onAddTask from './onAddTask.js';
+import onEdit from './onEdit.js';
 import Typography from '@material-ui/core/Typography';
+import styled from 'styled-components';
 
-export default function FormDialog({index}) {
+export default function FormDialog({index, value}) {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -19,38 +20,39 @@ export default function FormDialog({index}) {
   const handleClose = () => {
     setOpen(false);
   };
-  const _onAddTask = React.useCallback((e) => onAddTask(e, index), [
+  const _onEdit = React.useCallback((e) => onEdit(e, index), [
     index,
   ]);
 
   const _handleClose = () => {
     setOpen(false);
-    _onAddTask();
+    _onEdit();
   };
   
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-       <Typography variant="body1" gutterBottom> + Добавить карточку</Typography>
+      <Button color="primary" onClick={handleClickOpen}>
+       <Typography variant="body1" gutterBottom>{value}</Typography>
       </Button>
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Добавить карточку</DialogTitle>
+        <DialogTitle id="form-dialog-title">Изменить</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            id="textFieldNameTasks"
+            id="textFieldNameTasksEdit"
             type="name"
+            defaultValue={value}
             fullWidth
             color="secondary"
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-           <Typography variant="body1" gutterBottom> Отменить</Typography>
+           <Typography variant="body1" gutterBottom>Отменить</Typography>
           </Button>
           <Button onClick={_handleClose} color="secondary">
-            <Typography variant="body1" gutterBottom>Добавить</Typography>
+            <Typography variant="body1" gutterBottom>Изменить</Typography>
           </Button>
         </DialogActions>
       </Dialog>

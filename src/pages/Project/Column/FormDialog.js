@@ -1,14 +1,16 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import {  Button,
+          TextField,
+          Dialog,
+          DialogActions,
+          DialogContent,
+          DialogContentText,
+          DialogTitle,
+          IconButton,
+          Typography,  } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import IconButton from '@material-ui/core/IconButton';
 import onAddColumn from './onAddColumn.js';
+
 
 export default function FormDialog() {
   const [open, setOpen] = React.useState(false);
@@ -19,6 +21,11 @@ export default function FormDialog() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const _onAddColumn = () => {
+    setOpen(false);
+    onAddColumn();
   };
   
   return (
@@ -40,10 +47,10 @@ export default function FormDialog() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">
-            Отменить
+           <Typography variant="body1" gutterBottom> Отменить </Typography> 
           </Button>
-          <Button onClick={onAddColumn} color="secondary">
-            Создать
+          <Button onClick={_onAddColumn} color="secondary">
+            <Typography variant="body1" gutterBottom> Создать </Typography> 
           </Button>
         </DialogActions>
       </Dialog>

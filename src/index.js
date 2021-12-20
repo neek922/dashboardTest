@@ -8,6 +8,7 @@ import {
 import DashboardPage from './pages/Dashboard';
 import ProjectPage from './pages/Project';
 import { Provider as StoreProvider} from './components/Store';
+import './index.css';
 
 
 render(<StoreProvider>

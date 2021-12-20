@@ -1,25 +1,24 @@
 import Store from '../../../components/Store';
 import { useSelector } from 'react-redux';
 
-const onAddTask = (e, index) =>  {
+const onEdit = (e, index) =>  {
 	const currentState = Store().getState().tasks;
-	const textarea = document.getElementById('textFieldNameTasks');
-	const value = textarea.value;
-
+	const textarea = document.getElementById('textFieldNameTasksEdit');
+	
 	Store().dispatch({
 		type: 'tasks',
 		payload: () => { 
-			if(value){
-				currentState.data.push({id: currentState.data.length+1, column_id: index, text: value,  });
-				
+			if(textarea.value){
+			    currentState.data[index].text = textarea.value;
 				currentState.data = [ ...currentState.data ];
-				
 				return { ...currentState};
 			} else {
+				currentState.data.splice(index, 1);
+				currentState.data = [ ...currentState.data ];
 				return { ...currentState};
 			}
 		}
 	});
 }
 
-export default onAddTask;
+export default onEdit;

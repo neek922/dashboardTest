@@ -4,26 +4,28 @@ import Box from '@material-ui/core/Box';
 import styled from 'styled-components';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import FormDialog from './FormDialog.js'
+import Typography from '@material-ui/core/Typography';
+import FormDialogEdit from '../Task/FormDialogEdit.js';
 
 const DivWrapper = styled.div`
 	text-align: left !important;
+	textTransform: none !important;
 `;
 
-let Task = ({ index }) => {
+let Task = ({ 
+	index,
+}) => {
 	const tasks = useSelector((currentState)=> currentState.tasks.data);
-	
+	const _onEdit = React.useCallback((e) => onEdit(e, index), [
+		index,
+	]);
+
 	return <React.Fragment>
-		{tasks.map((item, i) => {
-			if(index == item.column_id){
-			return <DivWrapper
-					key={i}>
-						<div>
-							{item.text}
-						</div>
+				<DivWrapper key={index}>
+							<FormDialogEdit 
+								index= {index}
+								value= {tasks[index].text}/>
 					</DivWrapper>
-				}
-			})} <FormDialog index = {index}/>
 	</React.Fragment>;
 };
 

@@ -1,7 +1,6 @@
 import Store from '../../components/Store';
 import { useSelector } from 'react-redux';
 import React from 'react';
-import FormDialog from './FormDialog.js'
 
 const onAddProject = (e) =>  {
 	const currentState = Store().getState().projects;
