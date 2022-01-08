@@ -24,8 +24,12 @@ const ListContainer = styled.div`
 	padding: 0px 0 8px 0;
 	margin: 40px 0 15px 0;
 	overflow-y: hidden;
-	
-	
+`;
+
+const ButtonWrapper = styled(Button)`
+ 	height: 100px;
+ 	text-transform: none;
+
 `;
 
 const TextWrapper = styled.div`
@@ -51,14 +55,6 @@ const TextContainer = styled.div`
 	line-height: 35px;
 	opacity: 0.9;
 	margin: 0 0 0 10px;
-`;
-
-const DivWrapper = styled.div`
-	background-image: url("https://images.unsplash.com/photo-1459695452562-46cc57bef5f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
-	background-size: cover;
-	background-position: center;
-	background-repeat: no-repeat;
-	height: 100vh;
 `;
 
 let Dashboard = (history) => {
