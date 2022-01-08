@@ -7,11 +7,10 @@ import {  Button,
           DialogContentText,
           DialogTitle,
           IconButton,  } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import onAddProject from './onAddProject.js';
-import ButtonColorTest from './ButtonColorTest';
+import onAddUser from './onAddUser.js';
 
-export default function FormDialog({userId}) {
+
+export default function RegistrForm() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -22,42 +21,45 @@ export default function FormDialog({userId}) {
     setOpen(false);
     
   };
-  const _onAddProject = (e) => {
+  const _onAddUser = (e) => {
     
     setOpen(false);
-    onAddProject(e, userId);
+    onAddUser(e);
   };
   
   return (
     <div>
-      <IconButton variant="outlined" color="primary" onClick={handleClickOpen}>
-        <AddCircleOutlineIcon/>
-      </IconButton>
+      <Button onClick={handleClickOpen} color="primary">Sign Up</Button>
       <Dialog maxWidth='xs' open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Создать проект</DialogTitle>
+        <DialogTitle id="form-dialog-title">Регистрация</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Введите название проекта!
+            Введите логин!
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
-            id="textFieldName"
+            id="textRegFormLogin"
             type="name"
             fullWidth
           />
           <DialogContentText>
-            Фон
+            Введите пароль!
           </DialogContentText>
-          <ButtonColorTest/>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="textRegFormPassword"
+            type="name"
+            fullWidth
+          />
         </DialogContent>
-        <div style={{height: '100px', width: '300px'}}>
-        </div>
+        
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Отменить
           </Button>
-          <Button onClick={_onAddProject} color="primary">
+          <Button onClick={_onAddUser} color="primary">
             Создать
           </Button>
         </DialogActions>

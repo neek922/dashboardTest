@@ -1,21 +1,17 @@
 import Store from '../../../components/Store';
 import { useSelector } from 'react-redux';
 
-const onAddTask = (e, columnID, text, type) =>  {
+const onAddComent = (e, index, textComent, type) =>  {
 	const currentState = Store().getState().tasks;
 	const correctData = (type === 'test') ? 'dataTest' : 'data';
 
 	Store().dispatch({
 		type: 'tasks',
 		payload: () => { 
-			if(text){
-				currentState[correctData].push({
-					id: `task-${currentState.taskID}`, 
-					column_id: columnID, 
-					text: text,
-					editIndex: 0,
-					coments: [],  });
-				currentState.taskID+=1;
+			if(textComent){
+				currentState[correctData][index].coments.push(textComent);
+				currentState[correctData][index].coments = [...currentState[correctData][index].coments];
+				currentState[correctData][index] = {...currentState[correctData][index]};
 				currentState[correctData] = [ ...currentState[correctData] ];
 				return { ...currentState};
 			} else {
@@ -25,4 +21,4 @@ const onAddTask = (e, columnID, text, type) =>  {
 	});
 }
 
-export default onAddTask;
+export default onAddComent;

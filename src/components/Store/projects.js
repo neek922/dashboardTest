@@ -1,14 +1,12 @@
 export const initialState = () => ({
 	deleteIndex: 0,
-	currentProjectId: 1,
+	currentColor: "rgba(206, 174, 230, 1)",
+	totalProject: 50000,
 	data: [],
-	favorites: [{
-	id: 1,
-	name: 'project1',
-}, {
-	id: 4,
-	name: 'project2',
-}],
+
+	favorites: [
+		
+	],
 
 });
 

@@ -4,62 +4,100 @@ import {
 	// Link,
 	withRouter, 
 } from 'react-router-dom';
-import Paper from '@material-ui/core/Paper';
-import Grid from '@material-ui/core/Grid';
 import Task from '../Task';
 import styled from 'styled-components';
-import FormDialog from '../Task/FormDialog.js';
-import Typography from '@material-ui/core/Typography';
 import onDeleteColumn from './onDeleteColumn.js';
-import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
+import TrelloActionButton from '../Task/TrelloActionButton';
+import { Droppable, Draggable } from 'react-beautiful-dnd';
+import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import ActionEditTitle from './ActionEditTitle';
 
-const PaperWrapper = styled(Paper)`
+const ListContainer = styled.div`
+		background-color: #dfe3e6;
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 3px;
+		width: 300px;
+		padding: 8px;
+		margin-right: 8px;
+		flex-wrap: wrap;
+		
+
+`;
+const IconContainer = styled(IconButton)`
+	color: rgba(0,0,0,.15) !important;
+	float: right !important;
+	padding: 3px !important;
+`;
+
+const TaskContainer = styled.div`
+	padding: 0 4px;
+	max-height: 400px;
+	overflow: auto;
+
+`;
+const TitleContainer = styled(Typography)`
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+	font-size: 25px;
+	font-weight: 400;
+	line-height: 35px;
 	color: white;
-	height: auto;
-	display: flow-root;
-	min-width: 200px;
-	min-height: 200px;
-	background-color: palevioletred;
-	text-align: center;
-`;
-const IconButtonWrapper = styled(IconButton)`
-	position: relative;
-	top: -214px;
-	left: 284px;
-}
 `;
 
-let Column = ({ index }) => {
-	//const projectId = history.location.pathname.substring(history.location.pathname.lastIndexOf('/')+1);
-	const columns = useSelector((currentState)=> currentState.columns.data);
+let Column = ({ index, projectId, column, type }) => {
+	
+	const editIndex = column.editIndex;
+	const tasks = useSelector((currentState)=> currentState.tasks.data);
+	const tasksTest = useSelector((currentState)=> currentState.tasks.dataTest);
+	const correctTask = (type === "test") ? tasksTest : tasks;
 	const _onDeleteColumn = React.useCallback((e) => onDeleteColumn(e, index), [
 		index,
 	]);
-	const tasks = useSelector((currentState)=> currentState.tasks.data);
 	
-	return <React.Fragment>
-				<PaperWrapper
-					key={index}
-					index={index}>  
-						<Typography variant="h6">{columns[index].name}</Typography>
-						{tasks.map((item, i) => {
-							if(columns[index].id == item.column_id){
-								return <Task
-										key={i}
-										index={i}
-										delIndex={i}/>
-									} else return <React.Fragment/>
-						})}
-					<FormDialog index = {columns[index].id}/>
-				</PaperWrapper>
-				<IconButtonWrapper 
-					variant="outlined" 
-					color="secondary" 
-					onClick={_onDeleteColumn}>
-	       				<DeleteRoundedIcon/>
-      			</IconButtonWrapper>
-	</React.Fragment>;
+	
+	return ( <Draggable draggableId={String(column.id)} index={index}>
+				{provided => (
+				<div {...provided.draggableProps} ref={provided.innerRef} {...provided.dragHandleProps}>
+					<Droppable droppableId={String(column.id)} type='tasks'>
+						{provided => (
+						<ListContainer {...provided.droppableProps} ref={provided.innerRef}>
+							{type === 'test'
+								? 	<TitleContainer variant="h6">{column.name }</TitleContainer>
+								: 	<>
+										<IconContainer 
+											onClick={_onDeleteColumn}>
+					       					<DeleteIcon />
+				      					</IconContainer>
+				      					<ActionEditTitle title={column.name} index={index}/>
+				      						{editIndex == 0
+				      							? <TitleContainer variant="h6">{column.name }</TitleContainer>
+				      							: <React.Fragment/>}
+			      					</>}			
+			      			<TaskContainer>
+								{correctTask.map((task, i) => {
+									if(task.column_id == column.id)
+										return <Task
+											task={task}
+											key={task.id} 
+											index={i}
+											delIndex={i}
+											title={column.name}
+											type={type}
+										/>
+								}
+									)}
+								{provided.placeholder}
+							</TaskContainer>
+							<TrelloActionButton columnID = {column.id} type={type}/>
+						</ListContainer>
+						)}
+					</Droppable>
+				</div>
+				)}
+			</Draggable>
+	);
 };
 
 Column = React.memo(Column);

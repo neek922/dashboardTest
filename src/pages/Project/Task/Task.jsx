@@ -1,32 +1,58 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import Box from '@material-ui/core/Box';
+import { Typography,
+		 Card,
+		 CardContent,
+		 Button } from '@material-ui/core/';
+import { Draggable } from 'react-beautiful-dnd';
 import styled from 'styled-components';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import FormDialogEdit from '../Task/FormDialogEdit.js';
+import ActionLaunchForm from './ActionLaunchForm';
+import ActionEditText from './ActionEditText';
 
 const DivWrapper = styled.div`
 	text-align: left !important;
-	textTransform: none !important;
 `;
 
-let Task = ({ 
+const CardContainer = styled.div`
+	margin-bottom: 8px;
+`;
+
+
+
+let Task = ({
+	task, 
 	index,
+	title,
+	type,
 }) => {
-	const tasks = useSelector((currentState)=> currentState.tasks.data);
+	
 	const _onEdit = React.useCallback((e) => onEdit(e, index), [
 		index,
 	]);
-
-	return <React.Fragment>
-				<DivWrapper key={index}>
-							<FormDialogEdit 
-								index= {index}
-								value= {tasks[index].text}/>
-					</DivWrapper>
-	</React.Fragment>;
+	
+	return (<Draggable draggableId={String(type+task.id)} index={index}>
+				{provided => (
+				<CardContainer ref={provided.innerRef} 
+				{...provided.draggableProps} 
+				{...provided.dragHandleProps}>
+					<Card>
+						<CardContent>
+							<ActionLaunchForm 
+									index = {index}
+									value = {task.text}
+									title = {title}
+									description={task.description}
+									coments={task.coments}
+									type={type}/>
+							    <ActionEditText index= {index}
+									value = {task.text}
+									type={type}/>		
+						</CardContent>
+				    </Card>
+				</CardContainer>
+				)}
+			</Draggable>
+	);
 };
 
 Task = React.memo(Task);

@@ -3,109 +3,111 @@ import { useSelector } from 'react-redux';
 import { 	Grid,
 			Button,
 			Typography,
-			IconButton, } from '@material-ui/core';
+			IconButton, 
+} from '@material-ui/core';
+import { 
+	// Link,
+	withRouter, 
+} from 'react-router-dom';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import onMount from './onMount.js';
 import FormDialog from './FormDialog.js';
-import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
-import onDeleteProject from './onDeleteProject.js';
-import { useDrag } from 'react-dnd';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import onDragEnd from './onDragEnd';
+import ProjFormired from './ProjFormired';
 
-const ButtonWrapper = styled(Button)`
- 	height: 100px;
-}
-`;
 
-const IconButtonWrapper = styled(IconButton)`
-	position: relative;
-	top: -125px;
-	left: 284px;
-}
-`;
-let ProjFormired = ({
-	index,
-}) => {
-	const value = useSelector((currentState)=> currentState.projects.data[index]);
-	const _onDeleteProject = React.useCallback((e) => onDeleteProject(e, index), [
-		index,
-	]);
+const ListContainer = styled.div`
+	display: flex;
+	flex-direction: row;
+	padding: 0px 0 8px 0;
+	margin: 40px 0 15px 0;
+	overflow-y: hidden;
 	
-	return <div>
-			<ButtonWrapper
-				component={Link}
-				to={`project/${value.id}`}
-				fullWidth
-				variant="contained" 
-				color="primary">
-				{value.name}
-			</ButtonWrapper>
-			<IconButtonWrapper 
-				key={index}
-				variant="outlined" 
-				color="primary" 
-				onClick={_onDeleteProject}>
-       				<DeleteRoundedIcon/>
-      		</IconButtonWrapper>
-	</div>;
-};
-ProjFormired = React.memo(ProjFormired);
-ProjFormired.defaultProps = {
-};
+	
+`;
 
-let Dashboard = () => {
+const TextWrapper = styled.div`
+	background-color: #172b4d; 
+	color: white;
+	text-align: center;
+	width: 100%;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+	font-size: 25px;
+	font-weight: 400;
+	line-height: 35px;
+	opacity: 0.9;
+`;
+
+const TextContainer = styled.div` 
+	color: black;
+	font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Noto Sans,Ubuntu,Droid Sans,Helvetica Neue,sans-serif;
+	font-size: 40px;
+	font-weight: 400;
+	line-height: 35px;
+	opacity: 0.9;
+	margin: 0 0 0 10px;
+`;
+
+const DivWrapper = styled.div`
+	background-image: url("https://images.unsplash.com/photo-1459695452562-46cc57bef5f6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	height: 100vh;
+`;
+
+let Dashboard = (history) => {
 	const data = useSelector((reduxState)=> reduxState.projects.data);
 	const favorites = useSelector((reduxState)=> reduxState.projects.favorites);
+	const currentState = useSelector((reduxState)=> reduxState.projects);
+	const id = history.location.pathname.substring(history.location.pathname.lastIndexOf('/')+1);
+
 	
-	React.useEffect(() => {
+	/*React.useEffect(() => {
 		onMount();
-	}, []);
+	}, []);*/
+
 	
-	return (<DndProvider backend={HTML5Backend}>
+	
+
+	return (<DragDropContext onDragEnd={onDragEnd}>
 				<div>
-					<Typography variant="h3">Мои доски</Typography>
-					<Grid 
-						container
-						spacing={3}>
-						{data.map((item, i) => {
-							return <Grid
-									key={i}
-									index={i} 
-									item
-									xs={3}>
-										<ProjFormired
-											key={i}
-											index={i} />
-									</Grid>;
-							})}
-						<FormDialog/>
-					</Grid>
-				<div><hr/>
-					<Typography variant="h3" gutterTop>Избранное</Typography>
-					<Grid 
-					container
-					spacing={3}>
-					{favorites.map((item, i) => {
-						return <Grid
-							key={item.id} 
-							item
-							xs={3}>
-							<ButtonWrapper
-								component={Link}
-								to={`project/${item.id}`}
-								fullWidth
-								variant="contained" 
-								color="primary">
-								{item.name}
-							</ButtonWrapper>
-						</Grid>;
-				})}
-				</Grid>
-			</div>
-		</div>
-	</DndProvider>
+					<TextWrapper>TrelloBoard</TextWrapper>
+						<Droppable droppableId="all-projects" direction="horizontal" type="projects">
+							{provided => (
+								<ListContainer {...provided.droppableProps} ref={provided.innerRef}>
+									{data.map((item, i) => (
+										(item.userId == id) 
+											?	<ProjFormired item={item} index={i} key={i} type='all'/>
+											:	<React.Fragment/>
+									))}
+									{provided.placeholder}
+									<FormDialog userId={id} style={{position: 'relative', top: '47px'}}/>
+									
+								</ListContainer>	
+							)}		
+						</Droppable>
+						<hr/>
+						<TextContainer>Favorits</TextContainer>
+						<Droppable droppableId="favorit" direction="horizontal" type="projects">
+							{provided => (
+								<ListContainer {...provided.droppableProps} ref={provided.innerRef}>
+									{favorites.map((item, i) => (
+										(item.userId == id) 
+											?	<ProjFormired item={item} index={i} key={i} type='favorit'/>
+											:	<React.Fragment/>
+									))}
+									{provided.placeholder}
+								</ListContainer>
+							)}
+						</Droppable>
+					</div>
+		</DragDropContext>
 	);
 };
 
@@ -113,5 +115,5 @@ Dashboard = React.memo(Dashboard);
 Dashboard.defaultProps = {
 };
 
-export default Dashboard;
+export default withRouter(Dashboard);
 
