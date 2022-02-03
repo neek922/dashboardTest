@@ -10,6 +10,7 @@ const onEditTitle = (e, index, text) =>  {
 		payload: () => { 
 			
 			    currentState.data[index].name = text;
+			    currentState.data[index] = { ...currentState.data[index] };
 				currentState.data = [ ...currentState.data ];
 				return { ...currentState};
 			}
